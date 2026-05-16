@@ -12,7 +12,7 @@
 
 window.LYRIC_LOOM_CONFIG = {
   // Replace with your deployed proxy URL, or leave blank for paste-only mode.
-  LYRICS_PROXY_URL: "",
+  LYRICS_PROXY_URL: "https://lyric-loom-ac3.vercel.app/api/lyrics",
 
   // Default scene size — gets overridden by the aspect picker.
   DEFAULT_W: 1080,
