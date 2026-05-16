@@ -70,8 +70,13 @@ async function tryGenius(artist, title, token) {
   const songUrl = hit.result.url;
   const pageRes = await fetch(songUrl, {
     headers: {
+      // Genius blocks non-browser UAs with 403; mimic a recent Chrome on macOS.
       "User-Agent":
-        "LyricLoom/1.0 (personal fan use)",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      "Accept":
+        "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Cache-Control": "no-cache",
     },
   });
   if (!pageRes.ok) throw new Error(`Genius page ${pageRes.status}`);
