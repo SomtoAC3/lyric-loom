@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lyric Loom — Kinetic Lyric Visualizer</title>
+  <meta name="description" content="Upload a photo or video, attach a song, and animate the lyrics with kinetic typography. Export as PNG or MP4." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Bebas+Neue&family=Anton&family=Playfair+Display:wght@700;900&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&family=Press+Start+2P&family=Permanent+Marker&family=Abril+Fatface&family=Lobster&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◐</span>
+      <span class="brand-name">Lyric Loom</span>
+    </div>
+    <div class="topbar-tag">Kinetic lyric visualizer</div>
+    <div class="topbar-actions">
+      <a class="ghost-btn" href="https://github.com/" target="_blank" rel="noopener" id="repoLink">View on GitHub</a>
+    </div>
+  </header>
+
+  <main class="app">
+    <!-- Left column: controls -->
+    <aside class="controls" aria-label="Controls">
+      <section class="panel">
+        <h2>1. Background</h2>
+        <div class="upload-zone" id="dropZone">
+          <input type="file" id="mediaInput" accept="image/*,video/*" hidden />
+          <button class="primary-btn" id="pickMediaBtn">Choose photo or video</button>
+          <p class="hint">Drop a file here, or pick one. JPG/PNG/MP4/WebM up to ~50MB.</p>
+        </div>
+        <div class="row two-col">
+          <label class="field">
+            <span>Darken</span>
+            <input type="range" id="darken" min="0" max="100" value="35" />
+          </label>
+          <label class="field">
+            <span>Blur</span>
+            <input type="range" id="blur" min="0" max="20" value="0" />
+          </label>
+        </div>
+        <div class="row two-col">
+          <label class="field">
+            <span>Brightness</span>
+            <input type="range" id="brightness" min="40" max="160" value="100" />
+          </label>
+          <label class="field">
+            <span>Vignette</span>
+            <input type="range" id="vignette" min="0" max="100" value="0" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Overlay tint</span>
+          <div class="row two-col tight">
+            <input type="color" id="overlayColor" value="#000000" />
+            <input type="range" id="overlayOpacity" min="0" max="100" value="0" />
+          </div>
+        </label>
+      </section>
+
+      <section class="panel">
+        <h2>2. Song &amp; lyrics</h2>
+        <div class="song-search-wrap">
+          <label class="field">
+            <span>Song title</span>
+            <input type="text" id="titleInput" placeholder="e.g. Pink + White" autocomplete="off" />
+          </label>
+          <ul class="song-suggestions" id="songSuggestions" hidden></ul>
+        </div>
+        <div class="row">
+          <span class="lyrics-status" id="lyricsStatus"></span>
+        </div>
+        <label class="field">
+          <span>Lyrics (one line per row — you can edit)</span>
+          <textarea id="lyricsInput" rows="8" placeholder="Paste lyrics here, or fetch them above. Each line is a separate animated phrase."></textarea>
+        </label>
+        <details class="advanced">
+          <summary>Optional: attach an audio file for playback &amp; MP4 export</summary>
+          <div class="row">
+            <input type="file" id="audioInput" accept="audio/*" />
+          </div>
+          <p class="hint">Only attach audio you own or have a license for. Do not upload copyrighted recordings you don't have rights to.</p>
+        </details>
+      </section>
+
+      <section class="panel">
+        <h2>3. Type &amp; motion</h2>
+        <label class="field">
+          <span>Font</span>
+          <select id="fontFamily">
+            <option value="Inter, sans-serif" style="font-family:Inter">Inter</option>
+            <option value="'Bebas Neue', sans-serif" style="font-family:'Bebas Neue'">Bebas Neue</option>
+            <option value="Anton, sans-serif" style="font-family:Anton">Anton</option>
+            <option value="'Playfair Display', serif" style="font-family:'Playfair Display'">Playfair Display</option>
+            <option value="'Caveat', cursive" style="font-family:Caveat">Caveat</option>
+            <option value="'Space Mono', monospace" style="font-family:'Space Mono'">Space Mono</option>
+            <option value="'Press Start 2P', monospace" style="font-family:'Press Start 2P'">Press Start 2P</option>
+            <option value="'Permanent Marker', cursive" style="font-family:'Permanent Marker'">Permanent Marker</option>
+            <option value="'Abril Fatface', serif" style="font-family:'Abril Fatface'">Abril Fatface</option>
+            <option value="'Lobster', cursive" style="font-family:Lobster">Lobster</option>
+          </select>
+        </label>
+        <div class="row two-col">
+          <label class="field">
+            <span>Text size</span>
+            <input type="range" id="fontSize" min="24" max="160" value="72" />
+          </label>
+          <label class="field">
+            <span>Weight</span>
+            <select id="fontWeight">
+              <option value="400">Regular</option>
+              <option value="600">Semibold</option>
+              <option value="700" selected>Bold</option>
+              <option value="900">Black</option>
+            </select>
+          </label>
+        </div>
+        <div class="row two-col">
+          <label class="field">
+            <span>Text color</span>
+            <input type="color" id="textColor" value="#ffffff" />
+          </label>
+          <label class="field">
+            <span>Accent color</span>
+            <input type="color" id="accentColor" value="#ff3d7f" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Animation style</span>
+          <select id="animStyle">
+            <option value="kinetic-mix" selected>Kinetic mix (per word)</option>
+            <option value="pop-scale">Pop &amp; scale</option>
+            <option value="slide-rise">Slide &amp; rise</option>
+            <option value="spin-in">Spin in</option>
+            <option value="glitch">Glitch shake</option>
+            <option value="typewriter">Typewriter</option>
+            <option value="bounce">Bounce drop</option>
+          </select>
+        </label>
+        <div class="row two-col">
+          <label class="field">
+            <span>Speed (lines/sec)</span>
+            <input type="range" id="speed" min="20" max="200" value="55" />
+          </label>
+          <label class="field">
+            <span>Intensity</span>
+            <input type="range" id="intensity" min="0" max="100" value="60" />
+          </label>
+        </div>
+        <div class="row two-col">
+          <label class="field">
+            <span>Stagger (per word)</span>
+            <input type="range" id="stagger" min="0" max="100" value="35" />
+          </label>
+          <label class="field">
+            <span>Hold per line (s)</span>
+            <input type="range" id="hold" min="5" max="60" value="20" />
+          </label>
+        </div>
+        <label class="field checkbox">
+          <input type="checkbox" id="showAttribution" checked />
+          <span>Always show artist credit on canvas</span>
+        </label>
+      </section>
+    </aside>
+
+    <!-- Right column: stage -->
+    <section class="stage" aria-label="Preview">
+      <div class="stage-frame">
+        <canvas id="stage" width="1080" height="1350"></canvas>
+        <video id="bgVideo" playsinline muted loop hidden></video>
+        <img id="bgImage" hidden alt="" />
+        <audio id="audio" preload="auto"></audio>
+        <div class="recording-pill" id="recPill" hidden>
+          <span class="rec-dot"></span>
+          Recording — <span id="recTime">0.0s</span>
+        </div>
+      </div>
+
+      <div class="stage-toolbar">
+        <div class="stage-toolbar-left">
+          <button class="icon-btn" id="playBtn" title="Play / pause">
+            <span id="playIcon">▶</span>
+          </button>
+          <button class="icon-btn" id="restartBtn" title="Restart">↺</button>
+          <span class="timecode" id="timecode">0.0s / 0.0s</span>
+        </div>
+        <div class="stage-toolbar-right">
+          <label class="field inline">
+            <span>Aspect</span>
+            <select id="aspect">
+              <option value="1080x1350" selected>4:5 (Portrait)</option>
+              <option value="1080x1920">9:16 (Story / Reel)</option>
+              <option value="1080x1080">1:1 (Square)</option>
+              <option value="1920x1080">16:9 (Wide)</option>
+            </select>
+          </label>
+          <button class="secondary-btn" id="snapshotBtn">⬇ PNG</button>
+          <button class="primary-btn" id="recordBtn">● Record MP4</button>
+        </div>
+      </div>
+
+      <div class="legal-note">
+        <strong>Personal &amp; fan-creative use only.</strong>
+        Lyrics are the property of their respective writers and publishers. Always credit the artist.
+        Do not use this tool to monetize, sell, or commercially distribute videos containing copyrighted lyrics or recordings without a license from the rights holders.
+        See your local copyright law (e.g. <em>fair use</em> in the US, <em>fair dealing</em> in the UK/CA) — this tool does not grant any license to copyrighted material.
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Built with vanilla JS · Deploys to GitHub Pages · Lyrics proxy is optional</span>
+  </footer>
+
+  <!-- Custom non-modal toast -->
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/lyrics.js"></script>
+  <script src="js/canvas.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

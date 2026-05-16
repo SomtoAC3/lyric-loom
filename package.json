@@ -1,0 +1,13 @@
+{
+  "name": "lyric-loom",
+  "version": "0.1.0",
+  "description": "Kinetic typography lyric visualizer — static frontend on GitHub Pages + optional serverless lyrics proxy.",
+  "private": true,
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "start": "python3 -m http.server 8080"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
