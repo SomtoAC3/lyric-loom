@@ -71,7 +71,7 @@ async function tryGenius(artist, title, token) {
   const pageRes = await fetch(songUrl, {
     headers: {
       "User-Agent":
-        "Mozilla/5.0 (compatible; LyricLoom/1.0; +https://github.com/) — personal/fan use",
+        "Mozilla/5.0 (compatible; LyricLoom/1.0; +https://github.com/) - personal/fan use",
     },
   });
   if (!pageRes.ok) throw new Error(`Genius page ${pageRes.status}`);
